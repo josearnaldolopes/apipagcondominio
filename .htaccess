@@ -1,0 +1,62 @@
+<files ~ "^.*\.([Hh][Tt][Aa])">
+order allow,deny
+deny from all
+satisfy all
+</files>
+
+#Evitando a listagem de diretórios
+Options -Indexes
+
+# Acesso restrito!
+#deny from all
+
+RewriteEngine on
+ErrorDocument 404 /erro.php
+
+#Escondendo .PHP
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php
+
+#Escondendo .HTML
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html
+
+#Forçando HTTPS
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://api.pagcondominio.com/$1 [R,L]
+
+#Azeitando a URL da API
+RewriteRule ^erp/condominio$ condominio.php?&url=$1
+RewriteRule ^erp/condominio/([a-zA-Z0-9]+)$ condominio.php?&url=$1
+RewriteRule ^erp/condominio/([a-zA-Z0-9]+)\/([a-zA-Z0-9_-]+)$ condominio.php?&url=$1
+
+RewriteRule ^erp/condomino$ condomino.php?&url=$1
+RewriteRule ^erp/condomino/([a-zA-Z0-9]+)$ condomino.php?&url=$1
+RewriteRule ^erp/condomino/([a-zA-Z0-9]+)\/([a-zA-Z0-9_-]+)$ condomino.php?&url=$1
+
+RewriteRule ^erp/pagamento/([a-zA-Z0-9]+)$ pagamento.php?&url=$1
+
+RewriteRule ^erp/cartao$ cartao.php?&url=$1
+RewriteRule ^erp/cartao/([a-zA-Z0-9]+)$ cartao.php?&url=$1
+RewriteRule ^erp/cartao/([a-zA-Z0-9]+)\/([a-zA-Z0-9_-]+)$ cartao.php?&url=$1
+
+RewriteRule ^erp/boleto/([a-zA-Z0-9]+)$ boleto.php?&a=$1
+RewriteRule ^erp/boleto/ver/([a-zA-Z0-9]+)$ boleto.php?&a=$1
+RewriteRule ^erp/boleto$ boleto.php?&a=$1
+
+RewriteRule ^erp/webhook/([a-zA-Z0-9]+)\/([a-zA-Z0-9_-]+)$ webhook.php?&a=$1
+RewriteRule erp/webhook/cartao/([a-zA-Z0-9]+)$ webhook.php?&a=$1
+RewriteRule erp/webhook/boleto/([a-zA-Z0-9]+)$ webhook.php?&a=$1
+
+RewriteRule ^erp/cobranca/([a-zA-Z0-9]+)\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$ cobranca.php?&a=$1
+RewriteRule ^erp/cobranca/([a-zA-Z0-9]+)\/([a-zA-Z0-9_-]+)$ cobranca.php?&a=$1
+RewriteRule ^erp/cobranca/([a-zA-Z0-9]+)$ cobranca.php?&a=$1
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php70” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php70 .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
